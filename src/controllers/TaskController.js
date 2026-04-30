@@ -20,12 +20,7 @@ class TaskController {
     static updateTask(req, res) {
         const id = req.params.id
         const title = req.body.title
-        const changes = TaskService.updateTask(id, title)
-        if (changes === 0) {
-            res.status(404)
-            res.send({ message: "Task not found" })
-            return
-        }
+        TaskService.updateTask(id, title)
         res.status(200)
         res.send({ message: "Task updated" })
     }
@@ -33,11 +28,6 @@ class TaskController {
     static deleteTask(req, res) {
         const id = req.params.id
         const changes = TaskService.deleteTask(id)
-        if (changes === 0) {
-            res.status(404)
-            res.send({ message: "Task not found" })
-            return
-        }
         res.status(200)
         res.send({ message: "Task deleted" })
     }
