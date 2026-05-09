@@ -9,6 +9,14 @@ class TaskService {
         return tasks
     }
 
+    static getTaskById(id) {
+        const task = TaskModel.getTaskById(id)
+        if (!task) {
+            throw new TaskNotFoundError("A task não foi encontrada")
+        }
+        return task
+    }
+
     static createTask(title) {
         if (title.length < 10) {
             throw new ValidationError("O campo título deve ter ao menos 10 caracteres")

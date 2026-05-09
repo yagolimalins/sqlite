@@ -9,6 +9,22 @@ class UserService {
         return users
     }
 
+    static getUserById(id) {
+        const user = UserModel.getUserById(id)
+        if (!user) {
+            throw new UserNotFoundError("O usuário não foi encontrado")
+        }
+        return user
+    }
+
+    static getUserByUsername(username) {
+        const user = UserModel.getUserByUsername(username)
+        if (!user) {
+            throw new UserNotFoundError("O usuário não foi encontrado")
+        }
+        return user
+    }
+
     static createUser(username, password) {
         if (!username || username === "") {
             throw new ValidationError("O campo username é obrigatório")

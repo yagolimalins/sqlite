@@ -8,6 +8,12 @@ class TaskModel {
         return tasks
     }
 
+    static getTaskById(id) {
+        const stmt = db.prepare('SELECT * FROM tasks WHERE id = ?')
+        const task = stmt.get(id)
+        return task
+    }
+
     static createTask(title) {
         const stmt = db.prepare('INSERT INTO tasks (title) VALUES (?)')
         const info = stmt.run(title)

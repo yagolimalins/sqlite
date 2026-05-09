@@ -2,14 +2,21 @@ function GlobalErrorHandler(err, req, res, next) {
 
   const statusCode = err.status || 500;
 
-  if(statusCode === 404) {
+  if (statusCode ===403) {
+    res.status(403)
+    res.json({
+      message: err.message
+    })
+  }
+
+  if (statusCode === 404) {
     res.status(404)
     res.json({
       message: err.message
     })
   }
 
-  if(statusCode === 400) {
+  if (statusCode === 400) {
     res.status(400)
     res.json({
       message: err.message

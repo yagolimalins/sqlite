@@ -10,6 +10,13 @@ class TaskController {
         res.send(tasks)
     }
 
+    static getTaskById(req, res) {
+        const id = req.params.id
+        const task = TaskService.getTaskById(id)
+        res.status(200)
+        res.send(task)
+    }
+
     static createTask(req, res) {
         const title = req.body.title
         const id = TaskService.createTask(title)

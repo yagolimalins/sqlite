@@ -8,6 +8,20 @@ class UserController {
         res.send(users)
     }
 
+    static getUserById(req, res) {
+        const id = req.params.id
+        const user = UserService.getUserById(id)
+        res.status(200)
+        res.send(user)
+    }
+
+    static getUserByUsername(req, res) {
+        const username = req.params.username
+        const user = UserService.getUserByUsername(username)
+        res.status(200)
+        res.send(user)
+    }
+
     static createUser(req, res) {
         const { username, password } = req.body
         const id = UserService.createUser(username, password)
