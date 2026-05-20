@@ -1,4 +1,5 @@
 import UserModel from "../models/UserModel.js";
+import UserService from "./UserService.js";
 
 class AuthService {
 
@@ -10,6 +11,11 @@ class AuthService {
         } else {
             return false
         }
+    }
+
+    static register(username, password) {
+        const id = UserService.createUser(username, password)
+        return id
     }
 
 }

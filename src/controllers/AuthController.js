@@ -3,6 +3,13 @@ import AuthService from "../services/AuthService.js"
 
 class AuthController {
 
+    static register(req, res) {
+        const { username, password } = req.body
+        const id = AuthService.register(username, password)
+        res.status(201)
+        res.json({ id })
+    }
+
     static login(req, res) {
         const username = req.body.username
         const password = req.body.password
