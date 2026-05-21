@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken"
+
 import AuthenticationError from "../errors/AuthenticationError.js"
 import AuthService from "../services/AuthService.js"
 
@@ -21,9 +23,22 @@ class AuthController {
         }
 
         if (authenticated === true) {
+
+            const payload = {
+                username: username
+            }
+
+            const SECRET = "MEUSEGREDOSUPERSECRETO"
+
+            const options = {
+                expiresIn: "5m"
+            }
+
+            const token = jwt.sign(payload, SECRET, options)
+
             res.status(200)
             res.json({
-                token: "WhAYgPk8JaCOGudSpSqitPxCYis4U4VqF3rHA93cFz3My8MsEC1HlUQ6vZcqv43w"
+                token: token
             })
         }
     }

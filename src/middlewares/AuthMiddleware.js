@@ -1,16 +1,21 @@
+import jwt from "jsonwebtoken";
 import AuthenticationError from "../errors/AuthenticationError.js";
 
 function AuthMiddleware(req, res, next) {
+    const SECRET = "MEUSEGREDOSUPERSECRETO";
     
-    const token = "WhAYgPk8JaCOGudSpSqitPxCYis4U4VqF3rHA93cFz3My8MsEC1HlUQ6vZcqv43w"
+    const token = req.header("Authorization");
 
-    const requestToken = req.header("Authorization")
-
-    if (requestToken !==  token) {
-        throw new AuthenticationError("Token inválido")
+    if (!token) {
+        throw new AuthenticationError("Token não fornecido.");
     }
 
-    next()
+    try {
+        jwt.verify(token, SECRET);
+        next();
+    } catch {
+        throw new AuthenticationError("Token inválido ou expirado.");
+    }
 }
 
-export default AuthMiddleware
+export default AuthMiddleware;
