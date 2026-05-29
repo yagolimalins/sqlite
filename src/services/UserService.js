@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import UserNotFoundError from "../errors/UserNotFoundError.js";
 import ValidationError from "../errors/ValidationError.js";
 import UserModel from "../models/UserModel.js";
@@ -25,14 +26,17 @@ class UserService {
         return user
     }
 
-    static createUser(username, password) {
+    static async createUser(username, password) {
         if (!username || username === "") {
             throw new ValidationError("O campo username é obrigatório")
         }
         if (!password || password === "") {
             throw new ValidationError("O campo password é obrigatório")
         }
-        const id = UserModel.createUser(username, password)
+
+        const passwordHash = await bcrypt.hash(password, 10)
+
+        const id = UserModel.createUser(username, passwordHash)
         return id
     }
 

@@ -1,12 +1,15 @@
+import bcrypt from "bcrypt";
 import UserModel from "../models/UserModel.js";
 import UserService from "./UserService.js";
 
 class AuthService {
 
-    static login(username, password) {
+    static async login(username, password) {
         const user = UserModel.getUserByUsername(username)
 
-        if (user.username === username && user.password === password) {
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+
+        if (user.username === username && isPasswordCorrect) {
             return true
         } else {
             return false
