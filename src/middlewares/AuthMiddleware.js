@@ -3,15 +3,17 @@ import AuthenticationError from "../errors/AuthenticationError.js";
 
 function AuthMiddleware(req, res, next) {
     const SECRET = "MEUSEGREDOSUPERSECRETO";
-    
-    const token = req.header("Authorization");
 
-    if (!token) {
+    const authHeader = req.header("Authorization");
+
+    if (!authHeader) {
         throw new AuthenticationError("Token não fornecido.");
     }
 
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
+
     try {
-        jwt.verify(token, SECRET);
+        req.user = jwt.verify(token, SECRET);
         next();
     } catch {
         throw new AuthenticationError("Token inválido ou expirado.");

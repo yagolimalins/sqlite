@@ -12,35 +12,33 @@ class AuthController {
         res.json({ id })
     }
 
-    static login(req, res) {
+    static async login(req, res) {
         const username = req.body.username
         const password = req.body.password
 
-        const authenticated = AuthService.login(username, password)
+        const user = await AuthService.login(username, password)
 
-        if (authenticated === false) {
+        if (user === false) {
             throw new AuthenticationError("Usuário ou senha inválidos")
         }
 
-        if (authenticated === true) {
-
-            const payload = {
-                username: username
-            }
-
-            const SECRET = "MEUSEGREDOSUPERSECRETO"
-
-            const options = {
-                expiresIn: "5m"
-            }
-
-            const token = jwt.sign(payload, SECRET, options)
-
-            res.status(200)
-            res.json({
-                token: token
-            })
+        const payload = {
+            id: user.id,
+            username: user.username
         }
+
+        const SECRET = "MEUSEGREDOSUPERSECRETO"
+
+        const options = {
+            expiresIn: "30m"
+        }
+
+        const token = jwt.sign(payload, SECRET, options)
+
+        res.status(200)
+        res.json({
+            token: token
+        })
     }
 
 }

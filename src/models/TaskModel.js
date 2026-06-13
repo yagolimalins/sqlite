@@ -2,33 +2,33 @@ import db from "../database/db.js";
 
 class TaskModel {
 
-    static getAllTasks() {
-        const stmt = db.prepare('SELECT * FROM tasks')
-        const tasks = stmt.all()
+    static getAllTasks(userId) {
+        const stmt = db.prepare('SELECT * FROM tasks WHERE user_id = ?')
+        const tasks = stmt.all(userId)
         return tasks
     }
 
-    static getTaskById(id) {
-        const stmt = db.prepare('SELECT * FROM tasks WHERE id = ?')
-        const task = stmt.get(id)
+    static getTaskById(id, userId) {
+        const stmt = db.prepare('SELECT * FROM tasks WHERE id = ? AND user_id = ?')
+        const task = stmt.get(id, userId)
         return task
     }
 
-    static createTask(title) {
-        const stmt = db.prepare('INSERT INTO tasks (title) VALUES (?)')
-        const info = stmt.run(title)
+    static createTask(title, userId) {
+        const stmt = db.prepare('INSERT INTO tasks (title, user_id) VALUES (?, ?)')
+        const info = stmt.run(title, userId)
         return info.lastInsertRowid
     }
 
-    static updateTask(id, title) {
-        const stmt = db.prepare('UPDATE tasks SET title = ? WHERE id = ?')
-        const info = stmt.run(title, id)
+    static updateTask(id, title, userId) {
+        const stmt = db.prepare('UPDATE tasks SET title = ? WHERE id = ? AND user_id = ?')
+        const info = stmt.run(title, id, userId)
         return info.changes
     }
 
-    static deleteTask(id) {
-        const stmt = db.prepare('DELETE FROM tasks WHERE id = ?')
-        const info = stmt.run(id)
+    static deleteTask(id, userId) {
+        const stmt = db.prepare('DELETE FROM tasks WHERE id = ? AND user_id = ?')
+        const info = stmt.run(id, userId)
         return info.changes
     }
 

@@ -10,7 +10,7 @@ class AuthService {
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
         if (user.username === username && isPasswordCorrect) {
-            return true
+            return user
         } else {
             return false
         }

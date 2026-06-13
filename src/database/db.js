@@ -2,13 +2,6 @@ import Database from "better-sqlite3";
 
 const db = new Database("database.db");
 
-const createTable = `
-  CREATE TABLE IF NOT EXISTS tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(255) NOT NULL
-  );
-`;
-
 const createUsersTable = `
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +10,15 @@ const createUsersTable = `
   );
 `;
 
-db.prepare(createTable).run();
+const createTasksTable = `
+  CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(255) NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES users(id)
+  );
+`;
+
 db.prepare(createUsersTable).run();
+db.prepare(createTasksTable).run();
 
 export default db;
